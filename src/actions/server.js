@@ -1,6 +1,7 @@
 import * as api from "../api";
 
 export function fetchState() {
+  console.log("fetchState()");
   return (dispatch) => {
     api.fetchState().then((resp) => {
       dispatch(fetchStateSucceeded(resp.data));
@@ -112,6 +113,7 @@ export function postFinish({ Person, Task }) {
 }
 
 export function fetchStateSucceeded(data) {
+  console.log("fetchStateSucceeded " + data);
   return {
     type: "FETCH_STATE_SUCCEEDED",
     payload: {
