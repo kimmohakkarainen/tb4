@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { Card, Accordion, Button } from "react-bootstrap";
+import { Card, Accordion, Button, Modal } from "react-bootstrap";
+
+import { fetchState, postCreate, postDelete } from "../actions";
+
+import CreateTaskModal from "../components/createTaskModal";
+import ModifyTaskModal from "../components/modifyTaskModal";
+import ModifyInfoModal from "../components/modifyInfoModal";
+import DeleteTaskModal from "../components/deleteTaskModal";
 
 import ErrorView from "../errorview";
 import Entries from "./entries";
@@ -13,17 +20,32 @@ function EnterView({
   errorModal,
   examinationOptions,
   doctorOptions,
-  createTaskModal,
-  modifyTaskModal,
-  modifyInfoModal,
-  deleteTaskModal,
   newTasks,
   assignedTasks,
-  processedTasks
+  processedTasks,
+
+  postCreate,
+  postDelete
 }) {
-  function openModifyTaskModal(task) {}
-  function openDeleteTaskModal(task) {}
-  function openModifyInfoModal(task) {}
+  const [createTaskModal, openCreateTaskModal] = useState(null);
+  const [modifyTaskModal, openModifyTaskModal] = useState(null);
+  const [deleteTaskModal, openDeleteTaskModal] = useState(null);
+  const [modifyInfoModal, openModifyInfoModal] = useState(null);
+
+  function exitModal() {
+    openCreateTaskModal(null);
+    openModifyTaskModal(null);
+    openDeleteTaskModal(null);
+    openModifyInfoModal(null);
+  }
+
+  function handleCreateTask(task) {
+    postCreate({ Person: person, Task: task });
+  }
+
+  function handleDeleteTask(task) {
+    postDelete({ Person: person, Task: task });
+  }
 
   return (
     <div>
@@ -77,6 +99,27 @@ function EnterView({
           </Accordion.Collapse>
         </Card>
       </Accordion>
+      <Modal show={deleteTaskModal != null} onHide={exitModal}>
+        <DeleteTaskModal task={deleteTaskModal} dispatch={handleDeleteTask} />
+      </Modal>
+      <Modal show={modifyTaskModal != null} onHide={exitModal}>
+        <ModifyTaskModal
+          task={modifyTaskModal}
+          dispatch={handleCreateTask}
+          examinationOptions={examinationOptions}
+          doctorOptions={doctorOptions}
+        />
+      </Modal>
+      <Modal show={modifyInfoModal != null} onHide={exitModal}>
+        <ModifyInfoModal task={modifyInfoModal} dispatch={handleCreateTask} />
+      </Modal>
+      <Modal show={createTaskModal} onHide={exitModal}>
+        <CreateTaskModal
+          callback={handleCreateTask}
+          examinationOptions={examinationOptions}
+          doctorOptions={doctorOptions}
+        />
+      </Modal>
     </div>
   );
 }
@@ -89,14 +132,18 @@ function mapStateToProps(state) {
     errorModal: state.errorModal,
     examinationOptions: state.examinationOptions,
     doctorOptions: state.doctorOptions,
-    createTaskModal: state.createTaskModal,
-    modifyTaskModal: state.modifyTaskModal,
-    modifyInfoModal: state.modifyInfoModal,
-    deleteTaskModal: state.deleteTaskModal,
     newTasks: state.newTasks,
     assignedTasks: state.assignedTasks,
     processedTasks: state.processedTasks
   };
 }
 
-export default connect(mapStateToProps)(EnterView);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchState: () => dispatch(fetchState()),
+    postCreate: (params) => dispatch(postCreate(params)),
+    postDelete: (params) => dispatch(postDelete(params))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EnterView);
