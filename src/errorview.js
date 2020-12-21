@@ -12,7 +12,7 @@ function ErrorView({ errorModal, fetchState }) {
           <Modal.Header>
             <Modal.Title>Virhe</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{this.props.errorModal}</Modal.Body>
+          <Modal.Body>{errorModal}</Modal.Body>
           <Modal.Footer>
             <Button bsStyle="primary" onClick={() => fetchState()}>
               OK

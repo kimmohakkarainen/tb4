@@ -5,8 +5,9 @@ import {
   Modal,
   Button,
   FormGroup,
-  ControlLabel,
-  FormControl
+  FormLabel,
+  FormControl,
+  Row
 } from "react-bootstrap";
 
 export default function DeleteTaskModal({ task, dispatch }) {
@@ -27,24 +28,24 @@ export default function DeleteTaskModal({ task, dispatch }) {
       </Modal.Header>
       <Modal.Body>
         <FormGroup>
-          <ControlLabel>Tutkimuspäivä</ControlLabel>
-          <FormControl.Static>{tutkimusPaiva}</FormControl.Static>
+          <FormLabel>Tutkimuspäivä</FormLabel>
+          <FormControl readOnly defaultValue={tutkimusPaiva} />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>Henkilötunnus</ControlLabel>
-          <FormControl.Static>{hetu}</FormControl.Static>
+          <FormLabel>Henkilötunnus</FormLabel>
+          <FormControl plaintext readOnly defaultValue={hetu} />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>Sukunimi</ControlLabel>
-          <FormControl.Static>{sukunimi}</FormControl.Static>
+          <FormLabel>Sukunimi</FormLabel>
+          <FormControl plaintext readOnly defaultValue={sukunimi} />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>Tutkimus</ControlLabel>
-          <FormControl.Static>{tutkimus}</FormControl.Static>
+          <FormLabel>Tutkimus</FormLabel>
+          <FormControl plaintext readOnly defaultValue={tutkimus} />
         </FormGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button bsStyle="primary" onClick={this.handleClick}>
+        <Button bsStyle="primary" onClick={handleClick}>
           OK
         </Button>
       </Modal.Footer>
