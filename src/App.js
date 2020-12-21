@@ -5,15 +5,13 @@ import { connect } from "react-redux";
 import { fetchState, postLogout } from "./actions";
 
 import Menu from "./menu";
-import EnterView from "./dummyview";
+import EnterView from "./enterview";
 import InvoiceView from "./dummyview";
 import PersonAdminView from "./dummyview";
 import ExaminationAdminView from "./dummyview";
 import PasswordView from "./dummyview";
 import DoctorView from "./dummyview";
 import Footer from "./components/footer.js";
-
-import "./styles.css";
 
 function App({ fetchState, postLogout, person }) {
   const personName =
