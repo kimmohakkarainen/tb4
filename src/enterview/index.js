@@ -58,11 +58,21 @@ function EnterView({
             </Accordion.Toggle>
           </Card.Header>
           <Accordion.Collapse eventKey="0">
-            <Entries
-              tasks={newTasks}
-              openModifyTaskModal={openModifyTaskModal}
-              openDeleteTaskModal={openDeleteTaskModal}
-            />
+            <div>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  openCreateTaskModal(true);
+                }}
+              >
+                Syötä uusi lausuttava
+              </Button>
+              <Entries
+                tasks={newTasks}
+                openModifyTaskModal={openModifyTaskModal}
+                openDeleteTaskModal={openDeleteTaskModal}
+              />
+            </div>
           </Accordion.Collapse>
         </Card>
 
@@ -123,8 +133,6 @@ function EnterView({
     </div>
   );
 }
-
-/* <Entries tasks={newTasks} /> */
 
 function mapStateToProps(state) {
   return {

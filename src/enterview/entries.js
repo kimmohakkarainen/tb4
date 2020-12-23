@@ -6,9 +6,6 @@ export default function Entries({
   openModifyTaskModal,
   openDeleteTaskModal
 }) {
-  console.log(tasks);
-  console.log(openModifyTaskModal);
-  console.log(openDeleteTaskModal);
   return (
     <Table striped bordered hover>
       <thead>

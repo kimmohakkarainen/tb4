@@ -8,7 +8,7 @@ import {
   ButtonToolbar,
   ToggleButtonGroup,
   FormGroup,
-  ControlLabel,
+  FormLabel,
   FormControl,
   HelpBlock
 } from "react-bootstrap";
@@ -27,21 +27,21 @@ function reducer(state, action) {
       return {
         ...state,
         hetu: payload,
-        hetuValid: payload.length === 11 ? "success" : "error"
+        hetuValid: payload.length === 11 ? true : false
       };
 
     case "SET_SUKUNIMI":
       return {
         ...state,
         sukunimi: payload,
-        sukunimiValid: payload.length > 1 ? "success" : "error"
+        sukunimiValid: payload.length > 1 ? true : false
       };
 
     case "SET_ESITIETOLOMAKE":
       return {
         ...state,
         esitietolomake: payload,
-        esitietolomakeValid: payload.length > 3 ? "success" : "error"
+        esitietolomakeValid: payload.length > 3 ? true : false
       };
 
     case "TOGGLE_ESITIETOLOMAKE":
@@ -122,11 +122,11 @@ const initialState = {
   laakari: ""
 };
 
-export default function CreateTaskModel(
+export default function CreateTaskModel({
   callback,
   examinationOptions,
   doctorOptions
-) {
+}) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function handleHetu(v) {
@@ -169,46 +169,51 @@ export default function CreateTaskModel(
         <Modal.Title>Uusi lausuttava</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <FormGroup validationState={state.tutkimusPaivaValid}>
-          <ControlLabel>Tutkimuspäivä</ControlLabel>
-          <div className="form-control">
-            <DayPickerInput
-              value={state.tutkimusPaiva}
-              format={DAY_FORMAT}
-              placeholder={DAY_FORMAT}
-              formatDate={formatDate}
-              parseDate={parseDate}
-              onDayChange={handleTutkimusPaivaChange}
-              dayPickerProps={dayPickerProps}
-            />
-          </div>
+        <FormGroup>
+          <FormLabel>Tutkimuspäivä</FormLabel>
+          <DayPickerInput
+            className="form-control"
+            value={state.tutkimusPaiva}
+            format={DAY_FORMAT}
+            placeholder={DAY_FORMAT}
+            formatDate={formatDate}
+            parseDate={parseDate}
+            onDayChange={handleTutkimusPaivaChange}
+            dayPickerProps={dayPickerProps}
+            isValid={state.tutkimusPaivaValid}
+          />
         </FormGroup>
-        <FormGroup validationState={state.hetuValid}>
-          <ControlLabel>Henkilötunnus</ControlLabel>
+        <FormGroup>
+          <FormLabel>Henkilötunnus</FormLabel>
           <FormControl
             type="text"
             placeholder="000000-0000"
             value={state.hetu}
             onChange={handleHetu}
+            isValid={state.hetuValid}
+            isInvalid={state.hetuValid === false}
           />
           {false && (
             <HelpBlock>Syötä tähän henkilön sosiaaliturvatunnus</HelpBlock>
           )}
         </FormGroup>
-        <FormGroup validationState={state.sukunimiValid}>
-          <ControlLabel>Sukunimi</ControlLabel>
+
+        <FormGroup>
+          <FormLabel>Sukunimi</FormLabel>
           <FormControl
             type="text"
             placeholder="Sukunimi"
             value={state.sukunimi}
             onChange={handleSukunimi}
+            isValid={state.sukunimiValid}
+            isInvalid={state.sukunimiValid === false}
           />
           {false && <HelpBlock>Syötä tähän henkilön sukunimi</HelpBlock>}
         </FormGroup>
-        <FormGroup validationState={state.tutkimusValid}>
-          <ControlLabel>Tutkimus</ControlLabel>
+        <FormGroup>
+          <FormLabel>Tutkimus</FormLabel>
           <FormControl
-            componentClass="select"
+            as="select"
             placeholder="(Valitse)"
             value={state.tutkimus}
             onChange={(event) => {
@@ -217,6 +222,8 @@ export default function CreateTaskModel(
                 tutkimusValid: "success"
               });
             }}
+            isValid={state.tutkimusValid}
+            isInvalid={state.tutkimusValid === false}
           >
             {examinationOptions.map(function (option) {
               return (
@@ -226,88 +233,10 @@ export default function CreateTaskModel(
               );
             })}
           </FormControl>
-          {false && <HelpBlock>Syötä tähän tutkimusmuoto</HelpBlock>}
-        </FormGroup>
-        <FormGroup validationState={state.vastaanottoPaivaValid}>
-          <ControlLabel>Vastaanottopäivä</ControlLabel>
-          <div className="form-control">
-            <DayPickerInput
-              value={state.vastaanottoPaiva}
-              format={DAY_FORMAT}
-              placeholder={DAY_FORMAT}
-              formatDate={formatDate}
-              parseDate={parseDate}
-              onDayChange={handleVastaanottoPaivaChange}
-              dayPickerProps={dayPickerProps}
-            />
-          </div>
-        </FormGroup>
-        <FormGroup>
-          <ButtonToolbar>
-            <ToggleButtonGroup
-              style={{ zIndex: 0 }}
-              type="radio"
-              name="options"
-              defaultValue={1}
-              onChange={handleEsitietolomakeToggle}
-            >
-              <ToggleButton value={1}>
-                Esitietolomaketta ei ole täytetty
-              </ToggleButton>
-              <ToggleButton value={2}>Esitietolomake on täytetty</ToggleButton>
-            </ToggleButtonGroup>
-          </ButtonToolbar>
-        </FormGroup>
-        {state.esitietolomakeExpanded && (
-          <FormGroup validationState={state.esitietolomakeValid}>
-            <ControlLabel>Esitietolomakkeen tiedostonimi</ControlLabel>
-            <FormControl
-              type="text"
-              placeholder="Esitietolomakkeen tiedostonimi"
-              value={state.esitietolomake}
-              onChange={handleEsitietolomake}
-            />
-            {false && (
-              <HelpBlock>Syötä esitietolomakkeen tiedostonimi</HelpBlock>
-            )}
-          </FormGroup>
-        )}
-        <FormGroup>
-          <ControlLabel>Lisätiedot</ControlLabel>
-          <FormControl
-            componentClass="textarea"
-            placeholder="Tähän mahdolliset lisätiedot"
-            value={state.lisatiedot}
-            onChange={(e) => {
-              this.setState({ lisatiedot: e.target.value });
-            }}
-          />
-          {false && <HelpBlock>Syötä tähän henkilön sukunimi</HelpBlock>}
-        </FormGroup>
-        <FormGroup>
-          <ControlLabel>Lääkäri</ControlLabel>
-          <FormControl
-            componentClass="select"
-            placeholder="(Valitse)"
-            value={state.laakari}
-            onChange={(event) => {
-              this.setState({ laakari: event.target.value });
-            }}
-          >
-            <option key={null} value={null}></option>
-            {doctorOptions.map(function (option) {
-              return (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              );
-            })}
-          </FormControl>
-          {false && <HelpBlock>Syötä tähän arvioiva lääkäri</HelpBlock>}
         </FormGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button bsStyle="primary" onClick={handleClick}>
+        <Button variant="primary" onClick={handleClick}>
           Talleta
         </Button>
       </Modal.Footer>
