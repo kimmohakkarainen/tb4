@@ -7,7 +7,7 @@ export default function IPEntries({
   openModifyInfoModal
 }) {
   return (
-    <Table striped condensed hover>
+    <Table striped bordered hover>
       <thead>
         <tr>
           <th />
@@ -28,7 +28,7 @@ export default function IPEntries({
             <tr key={task.taskId}>
               <td>
                 <Button
-                  bsStyle="primary"
+                  variant="primary"
                   onClick={() => {
                     openModifyTaskModal(task);
                   }}
@@ -44,7 +44,7 @@ export default function IPEntries({
               <td>
                 {task.viesti != null && (
                   <Button
-                    bsStyle="warning"
+                    variant="warning"
                     onClick={() => {
                       openModifyInfoModal(task);
                     }}

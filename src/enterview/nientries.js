@@ -8,7 +8,7 @@ export default function NIEntries({
   openDeleteTaskModal
 }) {
   return (
-    <Table striped condensed hover>
+    <Table striped bordered hover>
       <thead>
         <tr>
           <th />
@@ -32,7 +32,7 @@ export default function NIEntries({
               <td>
                 {admin && (
                   <Button
-                    bsStyle="warning"
+                    variant="warning"
                     onClick={() => {
                       openModifyTaskModal(task);
                     }}

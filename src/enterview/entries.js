@@ -10,7 +10,7 @@ export default function Entries({
   console.log(openModifyTaskModal);
   console.log(openDeleteTaskModal);
   return (
-    <Table striped condensed hover>
+    <Table striped bordered hover>
       <thead>
         <tr>
           <th />
@@ -32,7 +32,7 @@ export default function Entries({
             <tr key={task.taskId}>
               <td>
                 <Button
-                  bsStyle="primary"
+                  variant="primary"
                   onClick={() => {
                     openModifyTaskModal(task);
                   }}
