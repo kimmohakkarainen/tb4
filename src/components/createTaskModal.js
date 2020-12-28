@@ -70,7 +70,7 @@ function reducer(state, action) {
       return {
         ...state,
         esitietolomakeExpanded: !state.esitietolomakeExpanded,
-        esitietolomakeValid: state.esitietolomakeExpanded ? true : false,
+        esitietolomakeValid: state.esitietolomakeExpanded ? true : null,
         esitietolomake: ""
       };
 
@@ -223,7 +223,11 @@ export default function CreateTaskModel({
             dayPickerProps={dayPickerProps}
             isValid={state.tutkimusPaivaValid}
           />
-          <FormText className="text-muted">Syötä tähän tutkimuspäivä</FormText>
+          {false && (
+            <FormText className="text-muted">
+              Syötä tähän tutkimuspäivä
+            </FormText>
+          )}
         </FormGroup>
         <FormGroup>
           <FormLabel>Henkilötunnus</FormLabel>
@@ -235,9 +239,11 @@ export default function CreateTaskModel({
             isValid={state.hetuValid}
             isInvalid={state.hetuValid === false}
           />
-          <FormText className="text-muted">
-            Syötä tähän henkilön sosiaaliturvatunnus
-          </FormText>
+          {false && (
+            <FormText className="text-muted">
+              Syötä tähän henkilön sosiaaliturvatunnus
+            </FormText>
+          )}
         </FormGroup>
 
         <FormGroup>
@@ -250,9 +256,11 @@ export default function CreateTaskModel({
             isValid={state.sukunimiValid}
             isInvalid={state.sukunimiValid === false}
           />
-          <FormText className="text-muted">
-            Syötä tähän henkilön sukunimi
-          </FormText>
+          {false && (
+            <FormText className="text-muted">
+              Syötä tähän henkilön sukunimi
+            </FormText>
+          )}
         </FormGroup>
         <FormGroup>
           <FormLabel>Tutkimus</FormLabel>
@@ -287,7 +295,11 @@ export default function CreateTaskModel({
             dayPickerProps={dayPickerProps}
             isValid={state.vastaanottoPaivaValid}
           />
-          <FormText className="text-muted">Syötä tähän tutkimuspäivä</FormText>
+          {false && (
+            <FormText className="text-muted">
+              Syötä tähän tutkimuspäivä
+            </FormText>
+          )}
         </FormGroup>
 
         <FormGroup>
@@ -318,9 +330,11 @@ export default function CreateTaskModel({
               isValid={state.esitietolomakeValid}
               isInvalid={state.esitietolomakeValid === false}
             />
-            <FormText className="text-muted">
-              Syötä esitietolomakkeen tiedostonimi
-            </FormText>
+            {false && (
+              <FormText className="text-muted">
+                Syötä esitietolomakkeen tiedostonimi
+              </FormText>
+            )}
           </FormGroup>
         )}
 
@@ -332,9 +346,11 @@ export default function CreateTaskModel({
             value={state.lisatiedot}
             onChange={handleLisatiedot}
           />
-          <FormText className="text-muted">
-            Syötä tähän mahdolliset lisätiedot
-          </FormText>
+          {false && (
+            <FormText className="text-muted">
+              Syötä tähän mahdolliset lisätiedot
+            </FormText>
+          )}
         </FormGroup>
 
         <FormGroup>
@@ -356,9 +372,11 @@ export default function CreateTaskModel({
               );
             })}
           </FormControl>
-          <FormText className="text-muted">
-            Syötä tähän arvioiva lääkäri
-          </FormText>
+          {false && (
+            <FormText className="text-muted">
+              Syötä tähän arvioiva lääkäri
+            </FormText>
+          )}
         </FormGroup>
       </Modal.Body>
       <Modal.Footer>
