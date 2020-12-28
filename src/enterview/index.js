@@ -32,17 +32,11 @@ function EnterView({
   const [deleteTaskModal, openDeleteTaskModal] = useState(null);
   const [modifyInfoModal, openModifyInfoModal] = useState(null);
 
-  function exitModal() {
-    openCreateTaskModal(null);
-    openModifyTaskModal(null);
-    openDeleteTaskModal(null);
-    openModifyInfoModal(null);
-  }
-
   function handleCreateTask(task) {
-    postCreate({ Person: person, Task: task });
+    console.log("handleCreateTask");
     openCreateTaskModal(null);
     openModifyTaskModal(null);
+    postCreate({ Person: person, Task: task });
   }
 
   function handleDeleteTask(task) {
@@ -112,10 +106,16 @@ function EnterView({
           </Accordion.Collapse>
         </Card>
       </Accordion>
-      <Modal show={deleteTaskModal != null} onHide={exitModal}>
+      <Modal
+        show={deleteTaskModal != null}
+        onHide={() => openDeleteTaskModal(null)}
+      >
         <DeleteTaskModal task={deleteTaskModal} dispatch={handleDeleteTask} />
       </Modal>
-      <Modal show={modifyTaskModal != null} onHide={exitModal}>
+      <Modal
+        show={modifyTaskModal != null}
+        onHide={() => openModifyTaskModal(null)}
+      >
         <ModifyTaskModal
           task={modifyTaskModal}
           dispatch={handleCreateTask}
@@ -123,10 +123,13 @@ function EnterView({
           doctorOptions={doctorOptions}
         />
       </Modal>
-      <Modal show={modifyInfoModal != null} onHide={exitModal}>
+      <Modal
+        show={modifyInfoModal != null}
+        onHide={() => openModifyInfoModal(null)}
+      >
         <ModifyInfoModal task={modifyInfoModal} dispatch={handleCreateTask} />
       </Modal>
-      <Modal show={createTaskModal} onHide={exitModal}>
+      <Modal show={createTaskModal} onHide={() => openCreateTaskModal(null)}>
         <CreateTaskModal
           callback={handleCreateTask}
           examinationOptions={examinationOptions}
