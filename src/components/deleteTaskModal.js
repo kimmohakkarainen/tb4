@@ -45,7 +45,7 @@ export default function DeleteTaskModal({ task, dispatch }) {
         </FormGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button bsStyle="primary" onClick={handleClick}>
+        <Button variant="danger" onClick={handleClick}>
           OK
         </Button>
       </Modal.Footer>

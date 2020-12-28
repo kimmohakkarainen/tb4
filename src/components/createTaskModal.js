@@ -10,6 +10,7 @@ import {
   FormGroup,
   FormLabel,
   FormControl,
+  FormText,
   HelpBlock
 } from "react-bootstrap";
 import moment from "moment";
@@ -44,11 +45,32 @@ function reducer(state, action) {
         esitietolomakeValid: payload.length > 3 ? true : false
       };
 
+    case "SET_LISATIEDOT":
+      return {
+        ...state,
+        lisatiedot: payload
+      };
+
+    case "SET_LAAKARI":
+      return {
+        ...state,
+        laakari: payload
+      };
+
+    case "SET_TUTKIMUS":
+      console.log("SET_TUTKIMUS");
+      console.log(payload);
+      return {
+        ...state,
+        tutkimus: payload,
+        tutkimusValid: payload == null ? false : true
+      };
+
     case "TOGGLE_ESITIETOLOMAKE":
       return {
         ...state,
         esitietolomakeExpanded: !state.esitietolomakeExpanded,
-        esitietolomakeValid: expanded ? null : true,
+        esitietolomakeValid: state.esitietolomakeExpanded ? true : false,
         esitietolomake: ""
       };
 
@@ -96,7 +118,14 @@ function reducer(state, action) {
         action.payload.dispatch(params);
         return state;
       } else {
-        return state;
+        return {
+          ...state,
+          tutkimusPaivaValid: state.tutkimusPaivaValid ? true : false,
+          hetuValid: state.hetuValid ? true : false,
+          sukunimiValid: state.sukunimiValid ? true : false,
+          tutkimusValid: state.tutkimusValid ? true : false,
+          esitietolomakeValid: state.esitietolomakeValid ? true : false
+        };
       }
     default:
       console.log(" NOT MATCHED " + action.type);
@@ -135,6 +164,18 @@ export default function CreateTaskModel({
 
   function handleSukunimi(v) {
     dispatch({ type: "SET_SUKUNIMI", payload: v.target.value });
+  }
+
+  function handleLisatiedot(v) {
+    dispatch({ type: "SET_LISATIEDOT", payload: v.target.value });
+  }
+
+  function handleLaakari(v) {
+    dispatch({ type: "SET_LAAKARI", payload: v.target.value });
+  }
+
+  function handleTutkimus(v) {
+    dispatch({ type: "SET_TUTKIMUS", payload: v.target.value });
   }
 
   function handleEsitietolomake(v) {
@@ -182,6 +223,7 @@ export default function CreateTaskModel({
             dayPickerProps={dayPickerProps}
             isValid={state.tutkimusPaivaValid}
           />
+          <FormText className="text-muted">Syötä tähän tutkimuspäivä</FormText>
         </FormGroup>
         <FormGroup>
           <FormLabel>Henkilötunnus</FormLabel>
@@ -193,9 +235,9 @@ export default function CreateTaskModel({
             isValid={state.hetuValid}
             isInvalid={state.hetuValid === false}
           />
-          {false && (
-            <HelpBlock>Syötä tähän henkilön sosiaaliturvatunnus</HelpBlock>
-          )}
+          <FormText className="text-muted">
+            Syötä tähän henkilön sosiaaliturvatunnus
+          </FormText>
         </FormGroup>
 
         <FormGroup>
@@ -208,7 +250,9 @@ export default function CreateTaskModel({
             isValid={state.sukunimiValid}
             isInvalid={state.sukunimiValid === false}
           />
-          {false && <HelpBlock>Syötä tähän henkilön sukunimi</HelpBlock>}
+          <FormText className="text-muted">
+            Syötä tähän henkilön sukunimi
+          </FormText>
         </FormGroup>
         <FormGroup>
           <FormLabel>Tutkimus</FormLabel>
@@ -216,15 +260,11 @@ export default function CreateTaskModel({
             as="select"
             placeholder="(Valitse)"
             value={state.tutkimus}
-            onChange={(event) => {
-              this.setState({
-                tutkimus: event.target.value,
-                tutkimusValid: "success"
-              });
-            }}
+            onChange={handleTutkimus}
             isValid={state.tutkimusValid}
             isInvalid={state.tutkimusValid === false}
           >
+            <option key={null} value={null} disabled={true}></option>
             {examinationOptions.map(function (option) {
               return (
                 <option key={option.value} value={option.value}>
@@ -233,6 +273,92 @@ export default function CreateTaskModel({
               );
             })}
           </FormControl>
+        </FormGroup>
+        <FormGroup>
+          <FormLabel>Vastaanottopäivä</FormLabel>
+          <DayPickerInput
+            className="form-control"
+            value={state.vastaanottoPaiva}
+            format={DAY_FORMAT}
+            placeholder={DAY_FORMAT}
+            formatDate={formatDate}
+            parseDate={parseDate}
+            onDayChange={handleVastaanottoPaivaChange}
+            dayPickerProps={dayPickerProps}
+            isValid={state.vastaanottoPaivaValid}
+          />
+          <FormText className="text-muted">Syötä tähän tutkimuspäivä</FormText>
+        </FormGroup>
+
+        <FormGroup>
+          <ButtonToolbar>
+            <ToggleButtonGroup
+              style={{ zIndex: 0 }}
+              type="radio"
+              name="options"
+              defaultValue={1}
+              onChange={handleEsitietolomakeToggle}
+            >
+              <ToggleButton value={1}>
+                Esitietolomaketta ei ole täytetty
+              </ToggleButton>
+              <ToggleButton value={2}>Esitietolomake on täytetty</ToggleButton>
+            </ToggleButtonGroup>
+          </ButtonToolbar>
+        </FormGroup>
+
+        {state.esitietolomakeExpanded && (
+          <FormGroup>
+            <FormLabel>Esitietolomakkeen tiedostonimi</FormLabel>
+            <FormControl
+              type="text"
+              placeholder="Esitietolomakkeen tiedostonimi"
+              value={state.esitietolomake}
+              onChange={handleEsitietolomake}
+              isValid={state.esitietolomakeValid}
+              isInvalid={state.esitietolomakeValid === false}
+            />
+            <FormText className="text-muted">
+              Syötä esitietolomakkeen tiedostonimi
+            </FormText>
+          </FormGroup>
+        )}
+
+        <FormGroup>
+          <FormLabel>Lisätiedot</FormLabel>
+          <FormControl
+            type="textarea"
+            placeholder="Tähän mahdolliset lisätiedot"
+            value={state.lisatiedot}
+            onChange={handleLisatiedot}
+          />
+          <FormText className="text-muted">
+            Syötä tähän mahdolliset lisätiedot
+          </FormText>
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>Lääkäri</FormLabel>
+          <FormControl
+            as="select"
+            placeholder="(Valitse)"
+            value={state.laakari}
+            onChange={(event) => {
+              handleLaakari(event);
+            }}
+          >
+            <option key={null} value={null}></option>
+            {doctorOptions.map(function (option) {
+              return (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              );
+            })}
+          </FormControl>
+          <FormText className="text-muted">
+            Syötä tähän arvioiva lääkäri
+          </FormText>
         </FormGroup>
       </Modal.Body>
       <Modal.Footer>
