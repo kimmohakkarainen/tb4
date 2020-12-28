@@ -20,6 +20,24 @@ import MomentLocaleUtils, {
   parseDate
 } from "react-day-picker/moment";
 
+function stateIsValid({
+  hetuValid,
+  sukunimiValid,
+  tutkimusValid,
+  tutkimusPaivaValid,
+  vastaanottoPaivaValid,
+  esitietolomakeValid,
+  esitietolomakeExpanded
+}) {
+  return (
+    hetuValid &&
+    sukunimiValid &&
+    tutkimusValid &&
+    tutkimusPaivaValid &&
+    (esitietolomakeValid || !esitietolomakeExpanded)
+  );
+}
+
 function reducer(state, action) {
   const payload = action.payload;
 
@@ -76,46 +94,42 @@ function reducer(state, action) {
 
     case "SET_TUTKIMUSPAIVA":
       if (payload === undefined) {
-        return state;
+        return { ...state, tutkimusPaivaValid: null };
       } else {
         return {
           ...state,
           tutkimusPaiva: payload,
-          tutkimusPaivaValid: "success"
+          tutkimusPaivaValid: true
         };
       }
 
     case "SET_VASTAANOTTOPAIVA":
       if (payload === undefined) {
-        return state;
+        return { ...state, vastaanottoPaivaValid: null };
       } else {
         return {
           ...state,
           vastaanottoPaiva: payload,
-          vastaanottoPaivaValid: "success"
+          vastaanottoPaivaValid: true
         };
       }
 
     case "CONFIRM":
-      if (
-        state.tutkimusPaivaValid === "success" &&
-        state.hetuValid === "success" &&
-        state.sukunimiValid === "success" &&
-        state.tutkimusValid === "success" &&
-        state.esitietolomakeValid === "success"
-      ) {
+      console.log("CONFIRM");
+      console.log(state);
+      if (stateIsValid(state)) {
         const params = {
           taskId: null,
-          hetu: this.state.hetu,
-          sukunimi: this.state.sukunimi,
-          tutkimus: { value: this.state.tutkimus },
-          tutkimusPaiva: this.state.tutkimusPaiva,
-          vastaanottoPaiva: this.state.vastaanottoPaiva,
-          lisatiedot: this.state.lisatiedot,
-          esitietolomake: this.state.esitietolomake,
-          laakari: { value: this.state.laakari }
+          hetu: state.hetu,
+          sukunimi: state.sukunimi,
+          tutkimus: { value: state.tutkimus },
+          tutkimusPaiva: state.tutkimusPaiva,
+          vastaanottoPaiva: state.vastaanottoPaiva,
+          lisatiedot: state.lisatiedot,
+          esitietolomake: state.esitietolomake,
+          laakari: { value: state.laakari }
         };
-        action.payload.dispatch(params);
+        action.payload(params);
         return state;
       } else {
         return {
@@ -133,7 +147,6 @@ function reducer(state, action) {
 }
 
 const initialState = {
-  validation: false,
   hetu: "",
   hetuValid: null,
   sukunimi: "",

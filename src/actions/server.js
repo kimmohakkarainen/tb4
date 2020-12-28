@@ -25,6 +25,9 @@ export function postLogout() {
 }
 
 export function postCreate({ Person, Task }) {
+  console.log("postCreate");
+  console.log(Person);
+  console.log(Task);
   const params = Object.assign({}, Task, { personId: Person.personId });
   return (dispatch) => {
     api

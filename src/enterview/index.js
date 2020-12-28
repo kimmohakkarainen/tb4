@@ -41,9 +41,12 @@ function EnterView({
 
   function handleCreateTask(task) {
     postCreate({ Person: person, Task: task });
+    openCreateTaskModal(null);
+    openModifyTaskModal(null);
   }
 
   function handleDeleteTask(task) {
+    openDeleteTaskModal(null);
     postDelete({ Person: person, Task: task });
   }
 

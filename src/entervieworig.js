@@ -17,32 +17,43 @@ import {
 } from "react-bootstrap";
 import { connect } from "react-redux";
 import ActionButton from "./panels/actionbutton";
-import { fetchState, postCreate, postDelete, openDeleteTaskModal, openCreateTaskModal, openModifyTaskModal, openModifyInfoModal } from "./actions";
+import {
+  fetchState,
+  postCreate,
+  postDelete,
+  openDeleteTaskModal,
+  openCreateTaskModal,
+  openModifyTaskModal,
+  openModifyInfoModal
+} from "./actions";
 
-import CreateTaskModal from './components/createTaskModal';
-import ModifyTaskModal from './components/modifyTaskModal';
-import ModifyInfoModal from './components/modifyInfoModal';
-import DeleteTaskModal from './components/deleteTaskModal';
+import CreateTaskModal from "./components/createTaskModal";
+import ModifyTaskModal from "./components/modifyTaskModal";
+import ModifyInfoModal from "./components/modifyInfoModal";
+import DeleteTaskModal from "./components/deleteTaskModal";
 import ModifyEntry from "./panels/modifyentry";
-import ErrorView from './errorview';
-
+import ErrorView from "./errorview";
 
 class TaskButton extends Component {
-	constructor(props) {
-		super(props);
-		this.handleClick = this.handleClick.bind(this);
-	}
-	
-	handleClick() {
-		this.props.startModify(this.props.task);
-	}
-	
-	render() {
-		return <Button bsStyle="primary" onClick={this.handleClick}>Muokkaa</Button>;
-	}
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.startModify(this.props.task);
+  }
+
+  render() {
+    return (
+      <Button bsStyle="primary" onClick={this.handleClick}>
+        Muokkaa
+      </Button>
+    );
+  }
 }
 
-const IPEntries = props => {
+const IPEntries = (props) => {
   return (
     <Table striped condensed hover>
       <thead>
@@ -57,30 +68,38 @@ const IPEntries = props => {
         </tr>
       </thead>
       <tbody>
-        {props.tasks.map(function(task) {
+        {props.tasks.map(function (task) {
           const laakari = task.laakari == null ? "" : task.laakari.label;
           const syntymaaika = task.hetu == null ? "" : task.hetu;
           const tutkimus = task.tutkimus == null ? "" : task.tutkimus.label;
           return (
             <tr key={task.taskId}>
-            <td>
-            	<Button bsStyle="primary"
-            		onClick={() => {
-            			props.dispatch(openModifyTaskModal(task));
-            		}} >Muokkaa</Button>
-            </td>
+              <td>
+                <Button
+                  bsStyle="primary"
+                  onClick={() => {
+                    props.dispatch(openModifyTaskModal(task));
+                  }}
+                >
+                  Muokkaa
+                </Button>
+              </td>
               <td>{laakari}</td>
               <td>{tutkimus}</td>
               <td>{task.vastaanottoPaiva}</td>
               <td>{syntymaaika}</td>
               <td>{task.sukunimi}</td>
               <td>
-              {task.viesti != null &&
-            	  <Button bsStyle="warning"
-              		onClick={() => {
-            			props.dispatch(openModifyInfoModal(task));
-            		}} >Viesti</Button>
-              }
+                {task.viesti != null && (
+                  <Button
+                    bsStyle="warning"
+                    onClick={() => {
+                      props.dispatch(openModifyInfoModal(task));
+                    }}
+                  >
+                    Viesti
+                  </Button>
+                )}
               </td>
             </tr>
           );
@@ -90,54 +109,57 @@ const IPEntries = props => {
   );
 };
 
-const NotInvoicedEntries = props => {
-	  return (
-	    <Table striped condensed hover>
-	      <thead>
-	        <tr>
-	          <th />
-	          <th>Lääkäri</th>
-	          <th>Tutkimus</th>
-	          <th>Potilaan vast.otto</th>
-	          <th>Potilaan henkilötunnus</th>
-	          <th>Potilaan sukunimi</th>
-	          <th />
-	        </tr>
-	      </thead>
-	      <tbody>
-	        {props.tasks.map(function(task) {
-	          const laakari = task.laakari == null ? "" : task.laakari.label;
-	          const syntymaaika = task.hetu == null ? "" : task.hetu;
-	          const tutkimus = task.tutkimus == null ? "" : task.tutkimus.label;
-	          const admin = props.role == 'ADMIN';
-	          console.log(props);
-	          console.log(task);
-	          return (
-	            <tr key={task.taskId}>
-	            <td>
-	            {admin &&
-	            	<Button bsStyle="warning"
-	            		onClick={() => {
-	            			props.dispatch(openModifyTaskModal(task));
-	            		}} >Palauta Lausuttavaksi</Button>
-	            }
-	            </td>
-	              <td>{laakari}</td>
-	              <td>{tutkimus}</td>
-	              <td>{task.vastaanottoPaiva}</td>
-	              <td>{syntymaaika}</td>
-	              <td>{task.sukunimi}</td>
-	              <td/>
-	            </tr>
-	          );
-	        })}
-	      </tbody>
-	    </Table>
-	  );
-	};
+const NotInvoicedEntries = (props) => {
+  return (
+    <Table striped condensed hover>
+      <thead>
+        <tr>
+          <th />
+          <th>Lääkäri</th>
+          <th>Tutkimus</th>
+          <th>Potilaan vast.otto</th>
+          <th>Potilaan henkilötunnus</th>
+          <th>Potilaan sukunimi</th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {props.tasks.map(function (task) {
+          const laakari = task.laakari == null ? "" : task.laakari.label;
+          const syntymaaika = task.hetu == null ? "" : task.hetu;
+          const tutkimus = task.tutkimus == null ? "" : task.tutkimus.label;
+          const admin = props.role === "ADMIN";
+          console.log(props);
+          console.log(task);
+          return (
+            <tr key={task.taskId}>
+              <td>
+                {admin && (
+                  <Button
+                    bsStyle="warning"
+                    onClick={() => {
+                      props.dispatch(openModifyTaskModal(task));
+                    }}
+                  >
+                    Palauta Lausuttavaksi
+                  </Button>
+                )}
+              </td>
+              <td>{laakari}</td>
+              <td>{tutkimus}</td>
+              <td>{task.vastaanottoPaiva}</td>
+              <td>{syntymaaika}</td>
+              <td>{task.sukunimi}</td>
+              <td />
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
+  );
+};
 
-
-const Entries = props => {
+const Entries = (props) => {
   return (
     <Table striped condensed hover>
       <thead>
@@ -154,30 +176,37 @@ const Entries = props => {
         </tr>
       </thead>
       <tbody>
-        {props.tasks.map(function(task) {
+        {props.tasks.map(function (task) {
           const syntymaaika = task.hetu == null ? "" : task.hetu;
           const tutkimus = task.tutkimus == null ? "" : task.tutkimus.label;
           return (
             <tr key={task.taskId}>
-            	<td>
-            		<Button bsStyle="primary"
-            			onClick={() => {
-            				props.dispatch(openModifyTaskModal(task));
-            			}} >Muokkaa</Button>
-            	</td>
-            	<td>
-                <Button 
-                	onClick={() => {
-                		props.dispatch(openDeleteTaskModal(task));
-                  	}} >Poista</Button>
-            	</td>
-            	<td>{task.tutkimusPaiva}</td>
-            	<td>{tutkimus}</td>
-            	<td>{syntymaaika}</td>
-            	<td>{task.sukunimi}</td>
-            	<td>{task.vastaanottoPaiva}</td>
-            	<td>{task.esitietolomake}</td>
-            	<td>{task.lisatiedot}</td>
+              <td>
+                <Button
+                  bsStyle="primary"
+                  onClick={() => {
+                    props.dispatch(openModifyTaskModal(task));
+                  }}
+                >
+                  Muokkaa
+                </Button>
+              </td>
+              <td>
+                <Button
+                  onClick={() => {
+                    props.dispatch(openDeleteTaskModal(task));
+                  }}
+                >
+                  Poista
+                </Button>
+              </td>
+              <td>{task.tutkimusPaiva}</td>
+              <td>{tutkimus}</td>
+              <td>{syntymaaika}</td>
+              <td>{task.sukunimi}</td>
+              <td>{task.vastaanottoPaiva}</td>
+              <td>{task.esitietolomake}</td>
+              <td>{task.lisatiedot}</td>
             </tr>
           );
         })}
@@ -198,28 +227,27 @@ class EnterView extends Component {
     this.handleCreateTask = this.handleCreateTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
   }
-  
+
   componentDidMount() {
-	  this.props.dispatch(fetchState());
+    this.props.dispatch(fetchState());
   }
-  
+
   exitModal() {
-	  this.props.dispatch(fetchState());
+    this.props.dispatch(fetchState());
   }
-  
+
   handleCreateTask(task) {
-	  this.props.dispatch(postCreate({ Person: this.props.person, Task: task}));
+    this.props.dispatch(postCreate({ Person: this.props.person, Task: task }));
   }
 
   handleDeleteTask(task) {
-	  this.props.dispatch(postDelete({ Person: this.props.person, Task: task}));
+    this.props.dispatch(postDelete({ Person: this.props.person, Task: task }));
   }
-  
 
   render() {
     return (
       <div>
-      	<ErrorView />
+        <ErrorView />
         <Panel defaultExpanded>
           <Panel.Heading>
             <Panel.Title toggle componentClass="h3">
@@ -228,15 +256,27 @@ class EnterView extends Component {
           </Panel.Heading>
           <Panel.Collapse>
             <Panel.Body>
-              <Entries tasks={this.props.newTasks} dispatch={this.props.dispatch} />
-              <Button bsStyle="primary" onClick={() => { this.props.dispatch(openCreateTaskModal());}} >
+              <Entries
+                tasks={this.props.newTasks}
+                dispatch={this.props.dispatch}
+              />
+              <Button
+                bsStyle="primary"
+                onClick={() => {
+                  this.props.dispatch(openCreateTaskModal());
+                }}
+              >
                 Syötä uusi lausuttava
               </Button>
             </Panel.Body>
           </Panel.Collapse>
         </Panel>
-        <Modal show={this.props.createTaskModal} onHide={this.exitModal} >
-            <CreateTaskModal dispatch={this.handleCreateTask} examinationOptions={this.props.examinationOptions} doctorOptions={this.props.doctorOptions} />
+        <Modal show={this.props.createTaskModal} onHide={this.exitModal}>
+          <CreateTaskModal
+            dispatch={this.handleCreateTask}
+            examinationOptions={this.props.examinationOptions}
+            doctorOptions={this.props.doctorOptions}
+          />
         </Modal>
         {this.props.assignedTasks.length > 0 && (
           <Panel defaultExpanded>
@@ -247,7 +287,10 @@ class EnterView extends Component {
             </Panel.Heading>
             <Panel.Collapse>
               <Panel.Body>
-                <IPEntries tasks={this.props.assignedTasks} dispatch={this.props.dispatch} />
+                <IPEntries
+                  tasks={this.props.assignedTasks}
+                  dispatch={this.props.dispatch}
+                />
               </Panel.Body>
             </Panel.Collapse>
           </Panel>
@@ -261,19 +304,43 @@ class EnterView extends Component {
             </Panel.Heading>
             <Panel.Collapse>
               <Panel.Body>
-                <NotInvoicedEntries tasks={this.props.processedTasks} dispatch={this.props.dispatch} role={this.props.person.role} />
+                <NotInvoicedEntries
+                  tasks={this.props.processedTasks}
+                  dispatch={this.props.dispatch}
+                  role={this.props.person.role}
+                />
               </Panel.Body>
             </Panel.Collapse>
           </Panel>
         )}
-        <Modal show={this.props.deleteTaskModal != null} onHide={this.exitModal} >
-        	<DeleteTaskModal task={this.props.deleteTaskModal} dispatch={this.handleDeleteTask} />
+        <Modal
+          show={this.props.deleteTaskModal != null}
+          onHide={this.exitModal}
+        >
+          <DeleteTaskModal
+            task={this.props.deleteTaskModal}
+            dispatch={this.handleDeleteTask}
+          />
         </Modal>
-        <Modal show={this.props.modifyTaskModal != null} onHide={this.exitModal} >
-            <ModifyTaskModal task={this.props.modifyTaskModal} dispatch={this.handleCreateTask} examinationOptions={this.props.examinationOptions} doctorOptions={this.props.doctorOptions} />
+        <Modal
+          show={this.props.modifyTaskModal != null}
+          onHide={this.exitModal}
+        >
+          <ModifyTaskModal
+            task={this.props.modifyTaskModal}
+            dispatch={this.handleCreateTask}
+            examinationOptions={this.props.examinationOptions}
+            doctorOptions={this.props.doctorOptions}
+          />
         </Modal>
-        <Modal show={this.props.modifyInfoModal != null} onHide={this.exitModal} >
-            <ModifyInfoModal task={this.props.modifyInfoModal} dispatch={this.handleCreateTask} />
+        <Modal
+          show={this.props.modifyInfoModal != null}
+          onHide={this.exitModal}
+        >
+          <ModifyInfoModal
+            task={this.props.modifyInfoModal}
+            dispatch={this.handleCreateTask}
+          />
         </Modal>
       </div>
     );
