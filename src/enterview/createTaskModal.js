@@ -81,7 +81,7 @@ export default function CreateTaskModal({
         <FormGroup>
           <FormLabel>Tutkimuspäivä</FormLabel>
           <DayPickerInput
-            className="form-control"
+            component={(props) => <input class="form-control" {...props} />}
             value={state.tutkimusPaiva}
             format={DAY_FORMAT}
             placeholder={DAY_FORMAT}
@@ -154,24 +154,26 @@ export default function CreateTaskModal({
         </FormGroup>
         <FormGroup>
           <FormLabel>Vastaanottopäivä</FormLabel>
-          <DayPickerInput
-            className="form-control"
-            value={state.vastaanottoPaiva}
-            format={DAY_FORMAT}
-            placeholder={DAY_FORMAT}
-            formatDate={formatDate}
-            parseDate={parseDate}
-            onDayChange={(day, modifiers) =>
-              handleVastaanottoPaivaChange(taskDispatch, day, modifiers)
-            }
-            dayPickerProps={dayPickerProps}
-            isValid={state.vastaanottoPaivaValid}
-          />
-          {false && (
-            <FormText className="text-muted">
-              Syötä tähän tutkimuspäivä
-            </FormText>
-          )}
+          <div>
+            <DayPickerInput
+              component={(props) => <input class="form-control" {...props} />}
+              value={state.vastaanottoPaiva}
+              format={DAY_FORMAT}
+              placeholder={DAY_FORMAT}
+              formatDate={formatDate}
+              parseDate={parseDate}
+              onDayChange={(day, modifiers) =>
+                handleVastaanottoPaivaChange(taskDispatch, day, modifiers)
+              }
+              dayPickerProps={dayPickerProps}
+              isValid={state.vastaanottoPaivaValid}
+            />
+            {false && (
+              <FormText className="text-muted">
+                Syötä tähän tutkimuspäivä
+              </FormText>
+            )}
+          </div>
         </FormGroup>
 
         <FormGroup>
