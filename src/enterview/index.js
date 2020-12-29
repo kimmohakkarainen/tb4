@@ -5,10 +5,10 @@ import { Card, Accordion, Button, Modal } from "react-bootstrap";
 
 import { fetchState, postCreate, postDelete } from "../actions";
 
-import CreateTaskModal from "../components/createTaskModal";
+import CreateTaskModal from "./createTaskModal";
 import ModifyTaskModal from "../components/modifyTaskModal";
 import ModifyInfoModal from "../components/modifyInfoModal";
-import DeleteTaskModal from "../components/deleteTaskModal";
+import DeleteTaskModal from "./deleteTaskModal";
 
 import ErrorView from "../errorview";
 import Entries from "./entries";
@@ -64,15 +64,16 @@ function EnterView({
               >
                 Syötä uusi lausuttava
               </Button>
-              <Entries
-                tasks={newTasks}
-                openModifyTaskModal={openModifyTaskModal}
-                openDeleteTaskModal={openDeleteTaskModal}
-              />
+              {newTasks.length > 0 && (
+                <Entries
+                  tasks={newTasks}
+                  openModifyTaskModal={openModifyTaskModal}
+                  openDeleteTaskModal={openDeleteTaskModal}
+                />
+              )}
             </div>
           </Accordion.Collapse>
         </Card>
-
         <Card>
           <Card.Header>
             <Accordion.Toggle as={Button} variant="link" eventKey="1">
@@ -89,22 +90,24 @@ function EnterView({
           </Accordion.Collapse>
         </Card>
 
-        <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Button} variant="link" eventKey="2">
-              Laskuttamattomat lausuttavat
-            </Accordion.Toggle>
-          </Card.Header>
-          <Accordion.Collapse eventKey="2">
-            <NIEntries
-              tasks={processedTasks}
-              role={person.role}
-              openModifyTaskModal={openModifyTaskModal}
-              openDeleteTaskModal={openDeleteTaskModal}
-              openModifyInfoModal={openModifyInfoModal}
-            />
-          </Accordion.Collapse>
-        </Card>
+        {processedTasks.length > 0 && (
+          <Card>
+            <Card.Header>
+              <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                Laskuttamattomat lausuttavat
+              </Accordion.Toggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey="2">
+              <NIEntries
+                tasks={processedTasks}
+                role={person.role}
+                openModifyTaskModal={openModifyTaskModal}
+                openDeleteTaskModal={openDeleteTaskModal}
+                openModifyInfoModal={openModifyInfoModal}
+              />
+            </Accordion.Collapse>
+          </Card>
+        )}
       </Accordion>
       <Modal
         show={deleteTaskModal != null}
@@ -131,7 +134,7 @@ function EnterView({
       </Modal>
       <Modal show={createTaskModal} onHide={() => openCreateTaskModal(null)}>
         <CreateTaskModal
-          callback={handleCreateTask}
+          dispatch={handleCreateTask}
           examinationOptions={examinationOptions}
           doctorOptions={doctorOptions}
         />
