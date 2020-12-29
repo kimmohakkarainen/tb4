@@ -15,6 +15,8 @@ import {
 import { getPreview, getExcel } from "../actions";
 
 import moment from "moment";
+import momentLocalizer from "react-widgets-moment";
+
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import MomentLocaleUtils, {
   formatDate,
@@ -23,8 +25,12 @@ import MomentLocaleUtils, {
 
 import ErrorView from "../errorview";
 import PreviewTable from "./previewtable";
+import TimeRange from "./timerange";
 
 const DAY_FORMAT = "D.M.YYYY";
+
+moment.locale("fi");
+momentLocalizer();
 
 function InvoiceView({
   person,
@@ -49,7 +55,11 @@ function InvoiceView({
     });
   }, [getPreview]);
 
-  function handleBeginDayChange(selectedDay, modifiers) {}
+  function handleTimeRangeChange({ begin, end }) {
+    console.log("handleTimeRangeChange");
+    console.log(begin);
+    console.log(end);
+  }
 
   function handleEndDayChange(selectedDay, modifiers) {}
 
@@ -57,6 +67,9 @@ function InvoiceView({
     ? moment(beginDate).format(DAY_FORMAT)
     : "";
   const formattedEndDay = endDate ? moment(endDate).format(DAY_FORMAT) : "";
+
+  const begin = moment(beginDate).toDate();
+  const end = moment(endDate).toDate();
 
   const dayPickerProps = {
     locale: "fi",
@@ -69,6 +82,10 @@ function InvoiceView({
   return (
     <Container>
       <ErrorView />
+      <Card body>
+        <strong>Laskutus</strong>
+      </Card>
+      <TimeRange begin={begin} end={end} onChange={handleTimeRangeChange} />
       <Card bg="light">
         <Card.Header>Laskutus</Card.Header>
         <Card.Body bg="white">
@@ -83,7 +100,7 @@ function InvoiceView({
                     <input class="form-control" {...props} />
                   )}
                   value={formattedBeginDay}
-                  onDayChange={handleBeginDayChange}
+                  onDayChange={handleEndDayChange}
                   format={DAY_FORMAT}
                   placeholder={DAY_FORMAT}
                   formatDate={formatDate}

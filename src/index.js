@@ -12,6 +12,8 @@ import Object from "core-js/features/object";
 
 import poriState from "./reducers";
 
+import "react-widgets/dist/css/react-widgets.css";
+
 const store = createStore(
   poriState,
   composeWithDevTools(applyMiddleware(thunk))
