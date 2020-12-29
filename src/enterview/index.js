@@ -119,8 +119,8 @@ function EnterView({
         show={modifyTaskModal != null}
         onHide={() => openModifyTaskModal(null)}
       >
-        <ModifyTaskModal
-          task={modifyTaskModal}
+        <CreateTaskModal
+          defaultValue={modifyTaskModal}
           dispatch={handleCreateTask}
           examinationOptions={examinationOptions}
           doctorOptions={doctorOptions}

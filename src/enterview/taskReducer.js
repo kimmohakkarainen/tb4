@@ -24,7 +24,6 @@ export function initialState(state) {
       sukunimi: "",
       sukunimiValid: null,
       tutkimus: "",
-      tutkimusValid: null,
       tutkimusPaiva: "",
       tutkimusPaivaValid: null,
       vastaanottoPaiva: "",
@@ -34,6 +33,23 @@ export function initialState(state) {
       esitietolomakeExpanded: false,
       lisatiedot: "",
       laakari: ""
+    };
+  } else {
+    console.log("initialState");
+    console.log(state);
+    return {
+      ...state,
+      laakari: state.laakari != null ? state.laakari.value : "",
+      hetuValid: true,
+      sukunimiValid: true,
+      tutkimus: state.tutkimus != null ? state.tutkimus.value : "",
+      tutkimusValid: state.tutkimus != null,
+      tutkimusPaivaValid: state.tutkimusPaiva != null,
+      vastaanottoPaivaValid: null,
+      esitietolomake: state.esitietolomake != null ? state.esitietolomake : "",
+      esitietolomakeValid: state.esitietolomake != null,
+      esitietolomakeExpanded:
+        state.esitietolomake != null && state.esitietolomake.length > 0
     };
   }
 }

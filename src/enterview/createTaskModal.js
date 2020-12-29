@@ -34,17 +34,22 @@ import {
   handleVastaanottoPaivaChange
 } from "./taskReducer";
 
-export default function CreateTaskModel({
+export default function CreateTaskModal({
   dispatch,
   examinationOptions,
-  doctorOptions
+  doctorOptions,
+  defaultValue
 }) {
-  const [state, taskDispatch] = useReducer(taskReducer, initialState(null));
+  const [state, taskDispatch] = useReducer(
+    taskReducer,
+    initialState(defaultValue)
+  );
 
   function handleClick() {
     if (stateIsValid(state)) {
       const params = {
-        taskId: null,
+        taskId: state.taskId,
+        version: state.version,
         hetu: state.hetu,
         sukunimi: state.sukunimi,
         tutkimus: { value: state.tutkimus },
@@ -56,6 +61,7 @@ export default function CreateTaskModel({
       };
       dispatch(params);
     } else {
+      console.log("handleClick().NOT_VALID");
       taskDispatch({ type: "NOT_VALID" });
     }
   }
