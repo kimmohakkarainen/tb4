@@ -34,3 +34,16 @@
   font-size: 12px;
   color: rgb(129, 129, 129);
 }
+
+:root {
+  --sata-light: #51afe1cc;
+  --sata-dark: #51afe1;
+}
+
+.bg-sata-light {
+  background-color: var(--sata-light);
+}
+
+.bg-sata-dark {
+  background-color: var(--sata-dark);
+}

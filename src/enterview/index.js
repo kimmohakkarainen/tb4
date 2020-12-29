@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { Card, Accordion, Button, Modal } from "react-bootstrap";
+import { Card, Container, Accordion, Button, Modal } from "react-bootstrap";
 
 import { fetchState, postCreate, postDelete } from "../actions";
 
@@ -45,7 +45,7 @@ function EnterView({
   }
 
   return (
-    <div>
+    <Container>
       <ErrorView />
       <Accordion defaultActiveKey="0">
         <Card>
@@ -74,21 +74,24 @@ function EnterView({
             </div>
           </Accordion.Collapse>
         </Card>
-        <Card>
-          <Card.Header>
-            <Accordion.Toggle as={Button} variant="link" eventKey="1">
-              Keskeneräiset lausuttavat
-            </Accordion.Toggle>
-          </Card.Header>
-          <Accordion.Collapse eventKey="1">
-            <IPEntries
-              tasks={assignedTasks}
-              openModifyTaskModal={openModifyTaskModal}
-              openDeleteTaskModal={openDeleteTaskModal}
-              openModifyInfoModal={openModifyInfoModal}
-            />
-          </Accordion.Collapse>
-        </Card>
+
+        {assignedTasks.length > 0 && (
+          <Card>
+            <Card.Header>
+              <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                Keskeneräiset lausuttavat
+              </Accordion.Toggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey="1">
+              <IPEntries
+                tasks={assignedTasks}
+                openModifyTaskModal={openModifyTaskModal}
+                openDeleteTaskModal={openDeleteTaskModal}
+                openModifyInfoModal={openModifyInfoModal}
+              />
+            </Accordion.Collapse>
+          </Card>
+        )}
 
         {processedTasks.length > 0 && (
           <Card>
@@ -139,7 +142,7 @@ function EnterView({
           doctorOptions={doctorOptions}
         />
       </Modal>
-    </div>
+    </Container>
   );
 }
 
