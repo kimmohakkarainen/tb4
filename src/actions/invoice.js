@@ -6,7 +6,7 @@ export function getPreview({
   doctorFilter,
   examinationFilter
 }) {
-  return dispatch => {
+  return (dispatch) => {
     api
       .getPreview({
         beginDate,
@@ -14,12 +14,15 @@ export function getPreview({
         doctorFilter,
         examinationFilter
       })
-      .then(resp => {
+      .then((resp) => {
         dispatch(fetchPreviewSucceeded(resp.data));
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(invoiceError(error.toString()));
       });
   };
 }
-
 
 export function fetchPreviewSucceeded(data) {
   return {
@@ -28,21 +31,30 @@ export function fetchPreviewSucceeded(data) {
   };
 }
 
-
-export function getExcel({
-	  beginDate,
-	  endDate,
-	  doctorFilter,
-	  examinationFilter
-	}) {
-	  return dispatch => {
-		    api
-		      .getExcel({
-		        beginDate,
-		        endDate,
-		        doctorFilter,
-		        examinationFilter
-		      });
-	  };
+export function invoiceError(error) {
+  return {
+    type: "OPEN_ERROR_MODAL",
+    payload: {
+      errorModal: error,
+      createTaskModal: false,
+      modifyTaskModal: null,
+      deleteTaskModal: null
+    }
+  };
 }
 
+export function getExcel({
+  beginDate,
+  endDate,
+  doctorFilter,
+  examinationFilter
+}) {
+  return (dispatch) => {
+    api.getExcel({
+      beginDate,
+      endDate,
+      doctorFilter,
+      examinationFilter
+    });
+  };
+}

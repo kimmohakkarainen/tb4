@@ -14,7 +14,7 @@ function ErrorView({ errorModal, fetchState }) {
           </Modal.Header>
           <Modal.Body>{errorModal}</Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="primary" onClick={() => fetchState()}>
+            <Button variant="primary" onClick={() => fetchState()}>
               OK
             </Button>
           </Modal.Footer>

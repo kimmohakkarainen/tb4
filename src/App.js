@@ -6,7 +6,7 @@ import { fetchState, postLogout } from "./actions";
 
 import Menu from "./menu";
 import EnterView from "./enterview";
-import InvoiceView from "./dummyview";
+import InvoiceView from "./invoiceview";
 import PersonAdminView from "./dummyview";
 import ExaminationAdminView from "./dummyview";
 import PasswordView from "./dummyview";
