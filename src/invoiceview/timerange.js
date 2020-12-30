@@ -10,38 +10,39 @@ import {
 } from "react-bootstrap";
 import { DateTimePicker } from "react-widgets";
 
+const parseFormats = ["D.M.YYYY", "D.M.YY", "D.M"];
+
 export default function TimeRange({ begin, end, onChange }) {
   return (
-    <Card>
-      <Card.Header>
-        <strong>Time Range</strong>
-      </Card.Header>
-      <Card.Body>
-        <Container>
-          <Form.Group as={Row} controlId="begin">
-            <Form.Label column sm="2">
-              <strong>Begin</strong>
-            </Form.Label>
-            <Col sm="4">
-              <DateTimePicker
-                time={false}
-                value={begin}
-                onChange={(begin) => onChange({ begin: begin, end: end })}
-              />
-            </Col>
-            <Form.Label column sm="2">
-              <strong>End</strong>
-            </Form.Label>
-            <Col sm="4">
-              <DateTimePicker
-                time={false}
-                value={end}
-                onChange={(end) => onChange({ begin: begin, end: end })}
-              />
-            </Col>
-          </Form.Group>
-        </Container>
-      </Card.Body>
+    <Card body>
+      <Container>
+        <Form.Group as={Row} controlId="begin">
+          <Form.Label column sm="2">
+            <strong>Alkupäivämäärä</strong>
+          </Form.Label>
+          <Col sm="4">
+            <DateTimePicker
+              time={false}
+              value={begin}
+              format="D.M.YYYY"
+              parse={parseFormats}
+              onChange={(value) => onChange({ begin: value })}
+            />
+          </Col>
+          <Form.Label column sm="2">
+            <strong>Loppupäivämäärä</strong>
+          </Form.Label>
+          <Col sm="4">
+            <DateTimePicker
+              time={false}
+              value={end}
+              format="D.M.YYYY"
+              parse={parseFormats}
+              onChange={(value) => onChange({ end: value })}
+            />
+          </Col>
+        </Form.Group>
+      </Container>
     </Card>
   );
 }
