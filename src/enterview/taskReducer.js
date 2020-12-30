@@ -1,4 +1,4 @@
-export function stateIsValid({
+/* export function stateIsValid({
   hetuValid,
   sukunimiValid,
   tutkimusValid,
@@ -13,6 +13,24 @@ export function stateIsValid({
     tutkimusValid &&
     tutkimusPaivaValid &&
     (esitietolomakeValid || !esitietolomakeExpanded)
+  );
+}
+*/
+
+export function stateIsValid({
+  hetu,
+  sukunimi,
+  tutkimus,
+  tutkimusPaiva,
+  esitietolomake,
+  esitietolomakeExpanded
+}) {
+  return (
+    hetu.length === 11 &&
+    sukunimi.length > 1 &&
+    tutkimus != null &&
+    tutkimusPaiva !== "" &&
+    (esitietolomake.length > 3 || !esitietolomakeExpanded)
   );
 }
 
@@ -35,16 +53,14 @@ export function initialState(state) {
       laakari: ""
     };
   } else {
-    console.log("initialState");
-    console.log(state);
     return {
       ...state,
       laakari: state.laakari != null ? state.laakari.value : "",
-      hetuValid: true,
-      sukunimiValid: true,
+      hetuValid: null,
+      sukunimiValid: null,
       tutkimus: state.tutkimus != null ? state.tutkimus.value : "",
-      tutkimusValid: state.tutkimus != null,
-      tutkimusPaivaValid: state.tutkimusPaiva != null,
+      tutkimusValid: null,
+      tutkimusPaivaValid: null,
       vastaanottoPaivaValid: null,
       esitietolomake: state.esitietolomake != null ? state.esitietolomake : "",
       esitietolomakeValid: state.esitietolomake != null,
@@ -92,8 +108,6 @@ export function taskReducer(state, action) {
       };
 
     case "SET_TUTKIMUS":
-      console.log("SET_TUTKIMUS");
-      console.log(payload);
       return {
         ...state,
         tutkimus: payload,
@@ -138,7 +152,7 @@ export function taskReducer(state, action) {
           state.esitietolomake.length > 3
             ? true
             : !state.esitietolomakeExpanded,
-        tutkimusPaivaValid: !state.tutkimusPaiva,
+        tutkimusPaivaValid: state.tutkimusPaiva === "" ? false : true,
         tutkimusValid: state.tutkimus === "" ? false : true
       };
 

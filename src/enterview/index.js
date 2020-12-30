@@ -53,26 +53,28 @@ function EnterView({
             <Accordion.Toggle as={Button} variant="link" eventKey="0">
               Uudet lausuttavat
             </Accordion.Toggle>
+            <Button
+              variant="primary"
+              onClick={() => {
+                openCreateTaskModal(true);
+              }}
+            >
+              Syötä uusi lausuttava
+            </Button>
           </Card.Header>
-          <Accordion.Collapse eventKey="0">
-            <div>
-              <Button
-                variant="primary"
-                onClick={() => {
-                  openCreateTaskModal(true);
-                }}
-              >
-                Syötä uusi lausuttava
-              </Button>
-              {newTasks.length > 0 && (
-                <Entries
-                  tasks={newTasks}
-                  openModifyTaskModal={openModifyTaskModal}
-                  openDeleteTaskModal={openDeleteTaskModal}
-                />
-              )}
-            </div>
-          </Accordion.Collapse>
+          <Card.Body>
+            <Accordion.Collapse eventKey="0">
+              <div>
+                {newTasks.length > 0 && (
+                  <Entries
+                    tasks={newTasks}
+                    openModifyTaskModal={openModifyTaskModal}
+                    openDeleteTaskModal={openDeleteTaskModal}
+                  />
+                )}
+              </div>
+            </Accordion.Collapse>
+          </Card.Body>
         </Card>
 
         {assignedTasks.length > 0 && (
@@ -127,6 +129,7 @@ function EnterView({
           dispatch={handleCreateTask}
           examinationOptions={examinationOptions}
           doctorOptions={doctorOptions}
+          title="Muokkaa lausuttava"
         />
       </Modal>
       <Modal
@@ -140,6 +143,7 @@ function EnterView({
           dispatch={handleCreateTask}
           examinationOptions={examinationOptions}
           doctorOptions={doctorOptions}
+          title="Uusi lausuttava"
         />
       </Modal>
     </Container>

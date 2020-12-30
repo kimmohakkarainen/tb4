@@ -38,7 +38,8 @@ export default function CreateTaskModal({
   dispatch,
   examinationOptions,
   doctorOptions,
-  defaultValue
+  defaultValue,
+  title
 }) {
   const [state, taskDispatch] = useReducer(
     taskReducer,
@@ -72,16 +73,26 @@ export default function CreateTaskModal({
     localeUtils: MomentLocaleUtils
   };
 
+  function inputComponent(validity) {
+    if (validity == null) {
+      return (props) => <input class="form-control" {...props} />;
+    } else if (validity) {
+      return (props) => <input class="form-control is-valid" {...props} />;
+    } else {
+      return (props) => <input class="form-control is-invalid" {...props} />;
+    }
+  }
+
   return (
     <div>
       <Modal.Header closeButton>
-        <Modal.Title>Uusi lausuttava</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <FormGroup>
           <FormLabel>Tutkimuspäivä</FormLabel>
           <DayPickerInput
-            component={(props) => <input class="form-control" {...props} />}
+            component={inputComponent(state.tutkimusPaivaValid)}
             value={state.tutkimusPaiva}
             format={DAY_FORMAT}
             placeholder={DAY_FORMAT}
