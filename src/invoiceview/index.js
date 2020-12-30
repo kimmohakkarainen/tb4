@@ -26,6 +26,7 @@ import MomentLocaleUtils, {
 import ErrorView from "../errorview";
 import PreviewTable from "./previewtable";
 import TimeRange from "./timerange";
+import Filter from "./filter";
 
 const DAY_FORMAT = "D.M.YYYY";
 
@@ -86,6 +87,12 @@ function InvoiceView({
         <strong>Laskutus</strong>
       </Card>
       <TimeRange begin={begin} end={end} onChange={handleTimeRangeChange} />
+      <Filter
+        doctorOptions={doctorOptions}
+        doctorFilter={doctorFilter}
+        examinationOptions={examinationOptions}
+        examinationFilter={examinationFilter}
+      />
       <Card bg="light">
         <Card.Header>Laskutus</Card.Header>
         <Card.Body bg="white">
