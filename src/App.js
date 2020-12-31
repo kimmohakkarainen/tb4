@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
+import { Modal } from "react-bootstrap";
+
 import { fetchState, postLogout } from "./actions";
 
 import Menu from "./menu";
+import ErrorView from "./errorview";
 import EnterView from "./enterview";
 import InvoiceView from "./invoiceview";
 import PersonAdminView from "./dummyview";
 import ExaminationAdminView from "./dummyview";
-import PasswordView from "./dummyview";
+import PasswordView from "./passwordview";
 import DoctorView from "./dummyview";
 import Footer from "./components/footer.js";
 
-function App({ fetchState, postLogout, person }) {
+function App({ fetchState, postLogout, person, errorModal }) {
   const personName =
     person && person.fullname ? person.fullname : person ? person.email : "";
 
@@ -23,6 +26,9 @@ function App({ fetchState, postLogout, person }) {
 
   return (
     <div className="App">
+      <Modal show={errorModal != null}>
+        <ErrorView />
+      </Modal>
       {person && (
         <Router>
           <div>
@@ -89,7 +95,8 @@ function App({ fetchState, postLogout, person }) {
 
 function mapStateToProps(state) {
   return {
-    person: state.person
+    person: state.person,
+    errorModal: state.errorModal
   };
 }
 

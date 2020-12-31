@@ -3,9 +3,14 @@ import * as api from "../api";
 export function fetchState() {
   console.log("fetchState()");
   return (dispatch) => {
-    api.fetchState().then((resp) => {
-      dispatch(fetchStateSucceeded(resp.data));
-    });
+    api
+      .fetchState()
+      .then((resp) => {
+        dispatch(fetchStateSucceeded(resp.data));
+      })
+      .catch((error) => {
+        dispatch(openErrorModal("Yhteysongelma"));
+      });
   };
 }
 
@@ -160,19 +165,31 @@ export function postPassword(params) {
         }, 5000);
       })
       .catch((error) => {
-        dispatch(postPasswordStatus(error.response.status));
-        setTimeout(() => {
-          dispatch(postPasswordStatus(null));
-        }, 5000);
+        console.log(error);
+        if (error.response) {
+          dispatch(postPasswordStatus(error.response.status));
+          setTimeout(() => {
+            dispatch(postPasswordStatus(null));
+          }, 5000);
+        } else {
+          dispatch(openErrorModal("Yhteysongelma"));
+        }
       });
   };
 }
+
+/*
+.catch((error) => {
+        dispatch(openErrorModal("Yhteysongelma"));
+      });
+*/
 
 export function postPasswordStatus(data) {
   return {
     type: "POST_PASSWORD_RESPONSE",
     payload: {
-      passwordStatus: data
+      passwordStatus: data,
+      errorModal: null
     }
   };
 }
